@@ -1,0 +1,9 @@
+table {table-layout: auto}
+caption {caption-side: top; text-align: center}
+th {text-align: center}
+tr>td {text-align: right; padding-right: 15px}
+tr {width: 100%}
+td {width: 200px}
+tr>td:first-child {text-align: center; padding-right: 0; width: 20px}
+tr>td:last-child {display:none}
+tr:hover>td:last-child {display: block}

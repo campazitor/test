@@ -1,0 +1,12 @@
+{
+    "name": "home/test",
+    "require": {
+        "monolog/monolog": "^1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "src\\": "vendor/src",
+            "app\\": "app"
+        }
+    }
+}
