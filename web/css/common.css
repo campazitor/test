@@ -1,0 +1,13 @@
+caption {
+    caption-side: top;
+    text-align: center
+}
+
+.head {
+    margin-top: 10%
+}
+
+.main {
+    padding: 20px;
+    border: 2px solid blue
+}

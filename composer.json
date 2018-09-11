@@ -1,12 +1,12 @@
 {
-    "name": "home/test",
+    "name": "home/test2",
     "require": {
-        "monolog/monolog": "^1.23"
+        "twbs/bootstrap": "^4.1"
     },
     "autoload": {
         "psr-4": {
-            "src\\": "vendor/src",
-            "app\\": "app"
+            "App\\": "app/",
+            "Src\\": "src/"
         }
     }
 }
