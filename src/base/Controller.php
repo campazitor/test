@@ -2,8 +2,8 @@
 
     namespace Src\base;
 
-
-    abstract class Controller {
+    abstract class Controller
+    {
 
         /**
          * current route
@@ -20,19 +20,22 @@
          */
         public $data;
 
-        public function __construct($route) {
+        public function __construct($route)
+        {
             $this->route = $route;
         }
 
         /**
          * get the file of the views
          */
-        public function getView() {
+        public function getView()
+        {
             $object = new View($this->route);
             $object->render($this->data);
         }
 
-        public function set($data) {
+        public function set($data)
+        {
             $this->data = $data;
         }
     }

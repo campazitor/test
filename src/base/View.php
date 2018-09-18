@@ -2,8 +2,8 @@
 
     namespace Src\base;
 
-
-    class View {
+    class View
+    {
 
         /**
          * current route
@@ -25,7 +25,8 @@
          * @param array $route
          * @param string $layout
          */
-        public function __construct($route, $layout = 'default') {
+        public function __construct($route, $layout = 'default')
+        {
             $this->route = $route;
             $this->layout = $layout;
         }
@@ -35,17 +36,19 @@
          *
          * @param $data
          */
-        public function render($data = []) {
+        public function render($data = [])
+        {
+
             if (isset($data)) {
                 extract($data);
             }
+
             $file_view = ROOT . "/app/views/{$this->route[0]}/{$this->route[1]}.php";
 
             ob_start();
             if (is_file($file_view)) {
                 require $file_view;
-            }
-            else {
+            } else {
                 echo "<p>Не найден вид <b>{$file_view}</b></p>";
             }
             $content = ob_get_clean();
@@ -53,8 +56,7 @@
             $file_layout = ROOT . "/app/views/layout/{$this->layout}.php";
             if (is_file($file_layout)) {
                 require $file_layout;
-            }
-            else {
+            } else {
                 echo "<p>Не найден шаблон <b>{$file_layout}</b></p>";
             }
 

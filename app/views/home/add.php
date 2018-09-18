@@ -3,24 +3,27 @@
         <div class="col-6 head"><h1>Добавить студента</h1></div>
         <div class="col-6 main">
             <form method="post" class="needs-validation">
-                <div class="form-group">
-                    <label for="rank">Рейтинг</label>
-                    <input type="number" class="form-control"
-                           name="rank" id="rank"
-                           placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="secondname">Фамилия</label>
-                    <input type="text" class="form-control"
-                           name="secondname" id="secondname"
-                           placeholder="Введите фамилию" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">Имя</label>
-                    <input type="text" class="form-control"
-                           name="name" id="name"
-                           placeholder="Введите имя" required>
-                </div>
+
+                <?php foreach ($postNames as $key => $value):?>
+
+                    <?php switch ($postTypes[$key]):
+                        case 'int':
+                            $type = 'type="number"';
+                            break;
+                        case 'string':
+                            $type = 'type="string"';
+                            break;
+                        default:
+                            $type = '';
+                    endswitch; ?>
+
+                    <div class="form-group">
+                        <label for="<?= $key ?>"><?= $value ?></label>
+                        <input <?= $type ?> class="form-control" name="<?= $key ?>" id="<?= $key ?>" required>
+                    </div>
+
+                <?php endforeach; ?>
+
                 <button type="submit" class="btn btn-primary">Добавить</button>
                 <a type="button" href="/" class="btn btn-warning">вернуться на
                     список</a>

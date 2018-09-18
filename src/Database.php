@@ -2,7 +2,8 @@
 
     namespace Src;
 
-    class Database {
+    class Database
+    {
 
         protected $pdo;
 
@@ -12,7 +13,7 @@
          * Database constructor.
          */
         protected function __construct() {
-            $db = require ROOT . '/app/config/database.php';
+            $db = require DB;
             $option = [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
@@ -36,11 +37,26 @@
          * execution of the request
          *
          * @param $sql string
+         * @param $param array
+         * @param $paramType array
          *
          * @return bool
          */
-        public function execute($sql) {
+        public function execute($sql, $param = [], $paramType = []) {
             $stmt = $this->pdo->prepare($sql);
+            if (isset($param)) {
+                foreach ($param as $key => $value) {
+                    switch ($paramType[$key]){
+                        case "string":
+                            $stmt->bindValue(':'.$key,$value, \PDO::PARAM_STR);
+                            break;
+                        case "int":
+                            $stmt->bindValue(':'.$key,$value, \PDO::PARAM_INT);
+                            break;
+                    }
+
+                }
+            }
             return $stmt->execute();
         }
 

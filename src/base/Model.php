@@ -4,7 +4,8 @@
 
     use Src\Database;
 
-    class Model {
+    class Model
+    {
 
         /**
          * @var Database
@@ -28,7 +29,8 @@
         /**
          * Model constructor.
          */
-        public function __construct() {
+        public function __construct()
+        {
             $this->pdo = Database::instance();
         }
 
@@ -36,16 +38,14 @@
          * save new block in database
          *
          * @param $table string
-         * @param $attr array
+         * @param $param array
          *
          * @return bool
          */
-        public function save($table, $attr) {
-            foreach ($attr as $name => $value) {
-                $columns[] = "$name='$value'";
-            }
-            $sql = "INSERT INTO $table SET " . implode(",", $columns);
-            return $this->pdo->execute($sql);
+        public function save($table, $param)
+        {
+            $sql = "INSERT INTO $table SET " . $this->getParam();
+            return $this->pdo->execute($sql, $param, $this->getAttrType());
         }
 
         /**
@@ -56,16 +56,12 @@
          *
          * @return bool
          */
-        public function update($table, $data) {
+        public function update($table, $data)
+        {
             if (isset($data['id'])) {
-                foreach ($data as $name => $value) {
-                    if ($name == 'id') {
-                        continue;
-                    }
-                    $columns[] = "$name='$value'";
-                }
-                $sql = "UPDATE " . $table . " SET " . implode(",", $columns) . " WHERE id = " . $data['id'] . "";
-                return $this->pdo->execute($sql);
+                $sql = "UPDATE " . $table . " SET " . $this->getParam() . " WHERE id = " . $data['id'] . "";
+                unset($data['id']);
+                return $this->pdo->execute($sql, $data, $this->getAttrType());
             }
         }
 
@@ -77,7 +73,8 @@
          *
          * @return bool
          */
-        public function delete($table, $id) {
+        public function delete($table, $id)
+        {
             $sql = "DELETE FROM " . $table . " WHERE id = " . $id . "";
             return $this->pdo->execute($sql);
         }
@@ -87,7 +84,8 @@
          *
          * @return array
          */
-        public function findAll() {
+        public function findAll()
+        {
             $sql = "SELECT * FROM {$this->table} ORDER by rank DESC";
             return $this->pdo->query($sql);
         }
@@ -99,9 +97,62 @@
          *
          * @return array
          */
-        public function findOne($id) {
+        public function findOne($id)
+        {
             $sql = "SELECT * FROM {$this->table} WHERE id=$id";
             return $this->pdo->queryOne($sql);
+        }
+
+        /**
+         * get the parameter string for the query
+         *
+         * @return string
+         */
+        public function getParam()
+        {
+            $param = $this->getAttrType();
+            $row = '';
+            foreach ($param as $name => $value) {
+                $row .= "$name = :$name, ";
+            }
+            $row = rtrim(rtrim($row), ',');
+            return $row;
+        }
+
+        /**
+         * return table fields with field name in the table header
+         *
+         * @return array
+         */
+        public function getAttr()
+        {
+            if (file_exists(FIELD)) {
+                $array = include FIELD;
+                $attr = [];
+                foreach ($array as $key => $value) {
+                    $key_new = explode("/", $key);
+                    $attr[$key_new[0]] = $value;
+                }
+                return $this->attr = $attr;
+            }
+        }
+
+        /**
+         * return table fields with types
+         *
+         * @return array
+         */
+        public function getAttrType()
+        {
+            if (file_exists(FIELD)) {
+                $array = include FIELD;
+                $attr = [];
+                foreach ($array as $key => $value) {
+                    $key_new = explode("/", $key);
+                    $attr[$key_new[0]] = $key_new[1];
+                }
+                return $this->attr = $attr;
+            }
         }
 
     }

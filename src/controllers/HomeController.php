@@ -10,18 +10,21 @@
      *
      * @package controllers
      */
-    class HomeController extends Controller {
+    class HomeController extends Controller
+    {
 
         public function actionIndex() {
 
             $title = "students list";
 
             $model = new Home();
+
             if (!empty($_POST)) {
                 $data = $_POST;
                 $model->save($model->table, $data);
                 header("Location: " . $_SERVER['REQUEST_URI']);
             }
+
             $postNames = $model->getAttr();
             $posts = $model->findAll();
 
@@ -33,14 +36,19 @@
 
             $title = "add student";
 
+            $model = new Home();
+
             if (!empty($_POST)) {
                 $data = $_POST;
-                $model = new Home();
+
                 $model->save($model->table, $data);
                 header("Location: /");
             }
 
-            $this->set(compact('title'));
+            $postNames = $model->getAttr();
+            $postTypes = $model->getAttrType();
+
+            $this->set(compact('title','postNames', 'postTypes'));
 
         }
 
@@ -55,8 +63,10 @@
                 $model->update($model->table, $data);
                 header("Location: /");
             }
+            $postNames = $model->getAttr();
+            $postTypes = $model->getAttrType();
 
-            $this->set(compact('title', 'postOne'));
+            $this->set(compact('title', 'postOne', 'postNames', 'postTypes'));
 
         }
 
